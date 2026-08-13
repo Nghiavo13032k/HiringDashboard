@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TalentFlow - AI Hiring Dashboard</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- Feather Icons -->
+  <script src="https://unpkg.com/feather-icons"></script>
+
+  <!-- Tailwind Configuration for AI Dark Theme -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            appBg: '#09090B',
+            surface: '#18181B',
+            surfaceHover: '#27272A',
+            borderGlow: '#27272A',
+            textMain: '#FAFAFA',
+            textMuted: '#A1A1AA',
+            aiPrimary: '#8B5CF6', /* Violet */
+            aiSecondary: '#3B82F6', /* Blue */
+          },
+          fontFamily: {
+            sans: ['ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar for Dark Theme */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #09090B; }
+    ::-webkit-scrollbar-thumb { background: #27272A; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3F3F46; }
+    
+    .glass-panel {
+      background: rgba(24, 24, 27, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .text-gradient {
+      background: linear-gradient(to right, #8B5CF6, #3B82F6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body class="bg-appBg text-textMain font-sans h-screen flex overflow-hidden selection:bg-aiPrimary selection:text-white">
+
+  <!-- SLIM LEFT SIDEBAR -->
+  <aside class="w-20 glass-panel flex-col items-center py-6 hidden md:flex border-r border-borderGlow z-20">
+    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-aiPrimary to-aiSecondary flex items-center justify-center shadow-lg shadow-aiPrimary/20 mb-8">
+      <i data-feather="cpu" class="text-white w-6 h-6"></i>
+    </div>
+    
+    <nav class="flex flex-col gap-6 flex-1 w-full items-center">
+    </a>
+      <a href="#" class="p-3 text-textMuted hover:text-white hover:bg-white/5 rounded-xl transition-all"><i data-feather="target"></i></a>
+    </nav>
+
+    <div class="mt-auto">
+      <a href="#" class="p-3 text-textMuted hover:text-white hover:bg-white/5 rounded-xl transition-all"><i data-feather="settings"></i></a>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT AREA -->
+  <main class="flex-1 flex flex-col overflow-hidden relative">
+    
+    <!-- Ambient Background Glow -->
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-aiPrimary/20 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-aiSecondary/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <!-- HEADER & FILTERS -->
+    <header class="glass-panel px-8 py-5 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-6 z-10 sticky top-0 border-b border-borderGlow">
+      <div>
+        <h1 class="text-2xl font-bold tracking-tight">Highlands Coffee <span class="text-gradient">HIRING DASHBOARD</span></h1>
+        <p class="text-sm text-textMuted mt-1 flex items-center gap-2">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+        </p>
+      </div>
+      
+      <!-- Dark Mode Filters -->
+      <div class="flex flex-wrap items-center gap-3">
+        <!-- Time -->
+        <div class="relative group">
+          <i data-feather="calendar" class="absolute left-3 top-2.5 text-textMuted w-4 h-4 group-hover:text-aiPrimary transition-colors"></i>
+          <select class="filter-dropdown bg-surface border border-borderGlow text-textMain pl-9 pr-8 py-2 rounded-xl text-sm appearance-none focus:outline-none focus:border-aiPrimary cursor-pointer transition-all hover:bg-surfaceHover">
+            <option value="Jan 2026">Jan 2026</option>
+            <option value="Feb 2026">Feb 2026</option>
+            <option value="YTD">YTD 2026</option>
+          </select>
+          <i data-feather="chevron-down" class="absolute right-3 top-2.5 text-textMuted w-4 h-4 pointer-events-none"></i>
+        </div>
+
+        <!-- Region -->
+        <div class="relative group">
+          <i data-feather="map-pin" class="absolute left-3 top-2.5 text-textMuted w-4 h-4 group-hover:text-aiPrimary transition-colors"></i>
+          <select class="filter-dropdown bg-surface border border-borderGlow text-textMain pl-9 pr-8 py-2 rounded-xl text-sm appearance-none focus:outline-none focus:border-aiPrimary cursor-pointer transition-all hover:bg-surfaceHover">
+            <option value="Nationwide">Nationwide</option>
+            <option value="South">South Region</option>
+            <option value="North">North Region</option>
+          </select>
+          <i data-feather="chevron-down" class="absolute right-3 top-2.5 text-textMuted w-4 h-4 pointer-events-none"></i>
+        </div>
+
+        <!-- Department -->
+        <div class="relative">
+          <select class="filter-dropdown bg-surface border border-borderGlow text-textMain pl-4 pr-8 py-2 rounded-xl text-sm appearance-none focus:outline-none focus:border-aiPrimary cursor-pointer transition-all hover:bg-surfaceHover">
+            <option value="Operations">Operations</option>
+            <option value="HR">HR</option>
+          </select>
+          <i data-feather="chevron-down" class="absolute right-3 top-2.5 text-textMuted w-4 h-4 pointer-events-none"></i>
+        </div>
+
+        <!-- DM -->
+        <div class="relative hidden sm:block">
+          <select class="filter-dropdown bg-surface border border-borderGlow text-textMain pl-4 pr-8 py-2 rounded-xl text-sm appearance-none focus:outline-none focus:border-aiPrimary cursor-pointer transition-all hover:bg-surfaceHover">
+            <option value="All">All DMs</option>
+            <option value="Hong">D.T.T. Hong</option>
+          </select>
+          <i data-feather="chevron-down" class="absolute right-3 top-2.5 text-textMuted w-4 h-4 pointer-events-none"></i>
+        </div>
+
+        <!-- Employee Group -->
+        <div class="relative hidden lg:block">
+          <select class="filter-dropdown bg-surface border border-borderGlow text-textMain pl-4 pr-8 py-2 rounded-xl text-sm appearance-none focus:outline-none focus:border-aiPrimary cursor-pointer transition-all hover:bg-surfaceHover">
+            <option value="Operations Staff">Operations Staff</option>
+            <option value="Manager">Manager</option>
+          </select>
+          <i data-feather="chevron-down" class="absolute right-3 top-2.5 text-textMuted w-4 h-4 pointer-events-none"></i>
+        </div>
+      </div>
+    </header>
+
+    <!-- SCROLLABLE DASHBOARD -->
+    <div class="flex-1 overflow-y-auto p-8 z-10">
+      
+      <!-- AI INSIGHT BANNER -->
+      <div class="bg-gradient-to-r from-aiPrimary/10 to-aiSecondary/10 border border-aiPrimary/20 rounded-2xl p-4 mb-8 flex items-start gap-4 shadow-lg">
+        <div class="bg-aiPrimary/20 p-2 rounded-lg text-aiPrimary mt-1">
+          <i data-feather="zap" class="w-5 h-5"></i>
+        </div>
+      </div>
+
+      <!-- KPI CARDS -->
+      <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-5 mb-8">
+        <div class="glass-panel p-5 rounded-2xl flex flex-col justify-between hover:border-white/10 transition-colors">
+          <p class="text-textMuted text-xs font-medium uppercase tracking-wider mb-3">Active Candidates</p>
+          <div class="flex justify-between items-end">
+            <h3 id="kpi-candidates" class="text-3xl font-bold text-white">2,670</h3>
+            <i data-feather="users" class="w-5 h-5 text-aiSecondary opacity-50"></i>
+          </div>
+        </div>
+        
+        <div class="glass-panel p-5 rounded-2xl flex flex-col justify-between hover:border-white/10 transition-colors">
+          <p class="text-textMuted text-xs font-medium uppercase tracking-wider mb-3">Total Stores</p>
+          <div class="flex justify-between items-end">
+            <h3 id="kpi-stores" class="text-3xl font-bold text-white">248</h3>
+            <i data-feather="box" class="w-5 h-5 text-aiSecondary opacity-50"></i>
+          </div>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl flex flex-col justify-between hover:border-aiPrimary/50 transition-colors relative overflow-hidden group">
+          <div class="absolute inset-0 bg-gradient-to-br from-aiPrimary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <p class="text-textMuted text-xs font-medium uppercase tracking-wider mb-3 relative z-10">New Hires</p>
+          <div class="flex justify-between items-end relative z-10">
+            <h3 id="kpi-hires" class="text-3xl font-bold text-white">1,308</h3>
+            <i data-feather="user-plus" class="w-5 h-5 text-aiPrimary"></i>
+          </div>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl flex flex-col justify-between hover:border-white/10 transition-colors">
+          <p class="text-textMuted text-xs font-medium uppercase tracking-wider mb-3">Average HC</p>
+          <div class="flex justify-between items-end">
+            <h3 id="kpi-hc" class="text-3xl font-bold text-white">14,000</h3>
+            <i data-feather="briefcase" class="w-5 h-5 text-aiSecondary opacity-50"></i>
+          </div>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl flex flex-col justify-between hover:border-white/10 transition-colors">
+          <p class="text-textMuted text-xs font-medium uppercase tracking-wider mb-3">Resignations</p>
+          <div class="flex justify-between items-end">
+            <h3 id="kpi-resignations" class="text-3xl font-bold text-white">701</h3>
+            <i data-feather="trending-down" class="w-5 h-5 text-red-400 opacity-50"></i>
+          </div>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl flex flex-col justify-between border-t-2 border-t-red-500 hover:border-white/10 transition-colors bg-gradient-to-b from-red-500/5 to-transparent">
+          <p class="text-textMuted text-xs font-medium uppercase tracking-wider mb-3">Turnover Rate</p>
+          <div class="flex justify-between items-end">
+            <h3 id="kpi-turnover" class="text-3xl font-bold text-red-400">5.5%</h3>
+            <i data-feather="activity" class="w-5 h-5 text-red-400"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN CHARTS GRID -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Center Primary Data -->
+        <div class="lg:col-span-8 flex flex-col gap-8">
+          
+          <!-- Turnover vs Resignations (Combo) -->
+          <div class="glass-panel p-6 rounded-3xl">
+            <div class="flex justify-between items-center mb-6">
+              <h3 class="text-lg font-semibold text-white flex items-center gap-2">
+                <i data-feather="bar-chart-2" class="w-4 h-4 text-aiPrimary"></i>
+                Turnover & Resignations Trend
+              </h3>
+            </div>
+            <div class="relative h-72">
+              <canvas id="turnoverChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Attrition & Reasons Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="glass-panel p-6 rounded-3xl">
+              <h3 class="text-sm font-semibold text-textMuted uppercase tracking-wider mb-4">Early Attrition by Tenure</h3>
+              <div class="relative h-56">
+                <canvas id="attritionChart"></canvas>
+              </div>
+            </div>
+
+            <div class="glass-panel p-6 rounded-3xl">
+              <h3 class="text-sm font-semibold text-textMuted uppercase tracking-wider mb-4">Resignation Drivers</h3>
+              <div class="relative h-56">
+                <canvas id="reasonChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side Widgets -->
+        <div class="lg:col-span-4 flex flex-col gap-8">
+          
+          <!-- FT vs AP Mix -->
+          <div class="glass-panel p-6 rounded-3xl flex-1 flex flex-col">
+            <h3 class="text-sm font-semibold text-textMuted uppercase tracking-wider mb-6">Contract Mix</h3>
+            <div class="relative flex-1 flex justify-center min-h-[200px]">
+              <canvas id="mixChart"></canvas>
+              <!-- Center Text inside Doughnut -->
+              <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <span class="text-3xl font-bold text-white">70%</span>
+                <span class="text-xs text-textMuted">Full-Time</span>
+              </div>
+            </div>
+            <div class="flex justify-center gap-6 mt-6">
+              <div class="flex items-center gap-2"><div class="w-2.5 h-2.5 rounded-full shadow-[0_0_8px_#8B5CF6] bg-aiPrimary"></div><span class="text-sm text-textMain">Full-Time</span></div>
+              <div class="flex items-center gap-2"><div class="w-2.5 h-2.5 rounded-full bg-surfaceHover border border-white/20"></div><span class="text-sm text-textMuted">Apprentice</span></div>
+            </div>
+          </div>
+
+          <!-- Demographics AI View -->
+          <div class="glass-panel p-6 rounded-3xl flex-1">
+            <h3 class="text-sm font-semibold text-textMuted uppercase tracking-wider mb-6">Demographics Map</h3>
+            
+            <div class="space-y-6">
+              <!-- Gender -->
+              <div class="bg-surface/50 p-4 rounded-xl border border-white/5">
+                <div class="flex justify-between items-center mb-3">
+                  <p class="text-sm font-semibold text-white">Gender Split</p>
+                  <span id="demo-male-text" class="text-xs text-aiSecondary bg-aiSecondary/10 px-2 py-1 rounded-md">Male 66%</span>
+                </div>
+                <div class="flex h-1.5 rounded-full overflow-hidden bg-surfaceHover">
+                  <div id="demo-male-bar" style="width: 66%" class="bg-aiSecondary shadow-[0_0_10px_#3B82F6] transition-all duration-500"></div>
+                </div>
+                <div class="flex justify-end text-xs mt-2 text-textMuted font-medium">
+                  <span id="demo-female-text">Female 34%</span>
+                </div>
+              </div>
+              
+              <!-- Age -->
+              <div class="bg-surface/50 p-4 rounded-xl border border-white/5">
+                <div class="flex justify-between items-center mb-3">
+                  <p class="text-sm font-semibold text-white">Age Distribution</p>
+                </div>
+                <div class="flex h-1.5 rounded-full overflow-hidden gap-0.5 bg-surfaceHover">
+                  <div id="age-1-bar" style="width: 47%" class="bg-aiPrimary transition-all duration-500"></div>
+                  <div id="age-2-bar" style="width: 32%" class="bg-aiSecondary transition-all duration-500"></div>
+                  <div id="age-3-bar" style="width: 21%" class="bg-textMuted transition-all duration-500"></div>
+                </div>
+                <div class="flex justify-between text-xs mt-3 font-medium text-textMuted">
+                  <span id="age-1-text">18-25: 47%</span>
+                  <span id="age-2-text">25-40: 32%</span>
+                  <span id="age-3-text">40+: 21%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script>
+    feather.replace();
+
+    // Dark Mode Chart Defaults
+    Chart.defaults.font.family = 'ui-sans-serif, system-ui, -apple-system, sans-serif';
+    Chart.defaults.color = '#A1A1AA'; // textMuted
+    
+    let turnoverChart, mixChart, attritionChart, reasonChart;
+
+    function initCharts() {
+      // 1. Turnover & Resignations Chart
+      turnoverChart = new Chart(document.getElementById('turnoverChart'), {
+        type: 'bar',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [
+            {
+              label: 'Turnover Rate (%)',
+              data: [4.8, 5.0, 5.2, 5.3, 5.4, 5.5],
+              type: 'line',
+              borderColor: '#8B5CF6',
+              backgroundColor: '#8B5CF6',
+              borderWidth: 3,
+              tension: 0.4,
+              pointBackgroundColor: '#09090B',
+              pointBorderColor: '#8B5CF6',
+              pointBorderWidth: 2,
+              pointRadius: 4,
+              yAxisID: 'y1'
+            },
+            {
+              label: 'Resignations',
+              data: [110, 95, 130, 125, 115, 126],
+              backgroundColor: 'rgba(59, 130, 246, 0.2)', // Faint blue
+              borderColor: 'rgba(59, 130, 246, 0.8)',
+              borderWidth: 1,
+              borderRadius: 4,
+              yAxisID: 'y'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false }, border: { display: false } },
+            y: { 
+              type: 'linear', position: 'left', 
+              grid: { color: 'rgba(255, 255, 255, 0.05)', borderDash: [4, 4] }, 
+              border: { display: false } 
+            },
+            y1: { type: 'linear', position: 'right', grid: { display: false }, border: { display: false } }
+          }
+        }
+      });
+
+      // 2. Full-Time vs Apprentice Mix
+      mixChart = new Chart(document.getElementById('mixChart'), {
+        type: 'doughnut',
+        data: {
+          labels: ['Full-Time', 'Apprentice'],
+          datasets: [{
+            data: [70, 30],
+            backgroundColor: ['#8B5CF6', '#27272A'],
+            borderWidth: 0,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '85%', // Very thin futuristic ring
+          plugins: { legend: { display: false }, tooltip: { enabled: false } }
+        }
+      });
+
+      // 3. Early Attrition Chart
+      attritionChart = new Chart(document.getElementById('attritionChart'), {
+        type: 'bar',
+        data: {
+          labels: ['< 30d', '30-60d', '60-90d', '90-180d'],
+          datasets: [{
+            label: 'Employees',
+            data: [15, 25, 40, 20],
+            backgroundColor: '#3B82F6',
+            borderRadius: 4,
+            barThickness: 20
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false }, border: { display: false } },
+            y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, border: { display: false }, display: false }
+          }
+        }
+      });
+
+      // 4. Resignation Reason Breakdown
+      reasonChart = new Chart(document.getElementById('reasonChart'), {
+        type: 'bar',
+        data: {
+          labels: ['Personal', 'Offer', 'Schedule', 'Commute'],
+          datasets: [{
+            label: 'Count',
+            data: [320, 180, 105, 96],
+            backgroundColor: '#8B5CF6',
+            borderRadius: 4,
+            barThickness: 12
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false }, border: { display: false }, display: false },
+            y: { grid: { display: false }, border: { display: false } }
+          }
+        }
+      });
+    }
+
+    initCharts();
+
+    // INTERACTIVITY
+    const formatNumber = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const getFluctuation = (base) => Math.round(base * (0.8 + Math.random() * 0.4));
+
+    document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
+      dropdown.addEventListener('change', () => {
+        // KPI Data
+        document.getElementById('kpi-candidates').innerText = formatNumber(getFluctuation(2670));
+        document.getElementById('kpi-stores').innerText = formatNumber(getFluctuation(248));
+        document.getElementById('kpi-hires').innerText = formatNumber(getFluctuation(1308));
+        document.getElementById('kpi-hc').innerText = formatNumber(getFluctuation(14000));
+        document.getElementById('kpi-resignations').innerText = formatNumber(getFluctuation(701));
+        document.getElementById('kpi-turnover').innerText = (5.5 * (0.8 + Math.random() * 0.4)).toFixed(1) + '%';
+
+        // Charts
+        turnoverChart.data.datasets[0].data = Array.from({length: 6}, () => (5.0 + Math.random() * 2).toFixed(1));
+        turnoverChart.data.datasets[1].data = Array.from({length: 6}, () => getFluctuation(120));
+        turnoverChart.update();
+
+        let ft = Math.round(50 + Math.random() * 40); 
+        mixChart.data.datasets[0].data = [ft, 100 - ft];
+        // Note: the center text is hardcoded HTML in this template, in a real app you'd update that via JS too.
+        mixChart.update();
+
+        attritionChart.data.datasets[0].data = [getFluctuation(15), getFluctuation(25), getFluctuation(40), getFluctuation(20)];
+        attritionChart.update();
+
+        reasonChart.data.datasets[0].data = [getFluctuation(320), getFluctuation(180), getFluctuation(105), getFluctuation(96)];
+        reasonChart.update();
+
+        // Demographics
+        let malePct = Math.round(40 + Math.random() * 35);
+        let femalePct = 100 - malePct;
+        document.getElementById('demo-male-bar').style.width = `${malePct}%`;
+        document.getElementById('demo-male-text').innerText = `Male ${malePct}%`;
+        document.getElementById('demo-female-text').innerText = `Female ${femalePct}%`;
+
+        let age1 = Math.round(30 + Math.random() * 30);
+        let age2 = Math.round(20 + Math.random() * 20);
+        let age3 = 100 - age1 - age2;
+        document.getElementById('age-1-bar').style.width = `${age1}%`;
+        document.getElementById('age-2-bar').style.width = `${age2}%`;
+        document.getElementById('age-3-bar').style.width = `${age3}%`;
+        
+        document.getElementById('age-1-text').innerText = `18-25: ${age1}%`;
+        document.getElementById('age-2-text').innerText = `25-40: ${age2}%`;
+        document.getElementById('age-3-text').innerText = `40+: ${age3}%`;
+      });
+    });
+  </script>
+</body>
+</html>
