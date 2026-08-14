@@ -65,7 +65,8 @@
     </div>
     
     <nav class="flex flex-col gap-6 flex-1 w-full items-center">
-      <a href="#" class="p-3 text-textMuted hover:text-white hover:bg-white/5 rounded-xl transition-all"><i data-feather="target"></i></a>
+      <a href="#" id="nav-overview" data-view="overview" title="Overview" class="nav-link p-3 rounded-xl transition-all bg-aiPrimary/15 text-aiPrimary"><i data-feather="grid"></i></a>
+      <a href="#" id="nav-rmam" data-view="rmam" title="RM/AM Performance" class="nav-link p-3 text-textMuted hover:text-white hover:bg-white/5 rounded-xl transition-all"><i data-feather="users"></i></a>
     </nav>
 
     <div class="mt-auto">
@@ -89,6 +90,7 @@
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
           </span>
+          Live Data
         </p>
       </div>
       
@@ -147,15 +149,9 @@
 
     <!-- SCROLLABLE DASHBOARD -->
     <div class="flex-1 overflow-y-auto p-8 z-10">
-      
-      <!-- AI INSIGHT BANNER -->
-      <div class="bg-gradient-to-r from-aiPrimary/10 to-aiSecondary/10 border border-aiPrimary/20 rounded-2xl p-4 mb-8 flex items-start gap-4 shadow-lg">
-        <div class="bg-aiPrimary/20 p-2 rounded-lg text-aiPrimary mt-1">
-          <i data-feather="zap" class="w-5 h-5"></i>
-        </div>
-        <div>
-        </div>
-      </div>
+
+      <!-- VIEW: OVERVIEW -->
+      <div id="view-overview" class="view-panel">
 
       <!-- KPI CARDS -->
       <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-5 mb-8">
@@ -307,6 +303,127 @@
         </div>
 
       </div>
+
+      </div>
+      <!-- END VIEW: OVERVIEW -->
+
+      <!-- VIEW: RM/AM PERFORMANCE -->
+      <div id="view-rmam" class="view-panel hidden">
+
+      <!-- RM/AM PERFORMANCE SECTION -->
+      <div class="grid grid-cols-1 gap-8">
+
+        <!-- Turnover Rate by RM/AM (Line Chart) -->
+        <div class="glass-panel p-6 rounded-3xl">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="text-lg font-semibold text-white flex items-center gap-2">
+              <i data-feather="users" class="w-4 h-4 text-aiPrimary"></i>
+              Turnover Rate by RM/AM
+            </h3>
+          </div>
+          <div class="relative h-80">
+            <canvas id="rmamChart"></canvas>
+          </div>
+        </div>
+
+        <!-- RM/AM Detail Table -->
+        <div class="glass-panel p-6 rounded-3xl">
+          <h3 class="text-sm font-semibold text-textMuted uppercase tracking-wider mb-4">RM/AM Headcount & Resignations by Month</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left border-collapse min-w-[900px]">
+              <thead>
+                <tr class="text-textMuted uppercase text-xs tracking-wider border-b border-borderGlow">
+                  <th class="py-3 pr-4 sticky left-0 bg-surface/95 backdrop-blur">RM/AM</th>
+                  <th class="py-3 px-3 text-right">Jan_Total SC</th>
+                  <th class="py-3 px-3 text-right">Jan_Total Resign</th>
+                  <th class="py-3 px-3 text-right">Feb_Total SC</th>
+                  <th class="py-3 px-3 text-right">Feb_Total Resign</th>
+                  <th class="py-3 px-3 text-right">Mar_Total SC</th>
+                  <th class="py-3 px-3 text-right">Mar_Total Resign</th>
+                  <th class="py-3 px-3 text-right">Apr_Total SC</th>
+                  <th class="py-3 px-3 text-right">Apr_Total Resign</th>
+                  <th class="py-3 px-3 text-right">May_Total SC</th>
+                  <th class="py-3 px-3 text-right">May_Total Resign</th>
+                  <th class="py-3 px-3 text-right">Jun_Total SC</th>
+                  <th class="py-3 px-3 text-right">Jun_Total Resign</th>
+                  <th class="py-3 px-3 text-right">Jul_Total SC</th>
+                  <th class="py-3 px-3 text-right">Jul_Total Resign</th>
+                  <th class="py-3 pl-3 text-right font-semibold text-white">Avg SC</th>
+                  <th class="py-3 pl-3 text-right font-semibold text-white">Total Res.</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/5">
+                <tr class="hover:bg-white/5 transition-colors">
+                  <td class="py-3 pr-4 font-medium text-white sticky left-0 bg-surface/95 backdrop-blur">Hoang Minh Duc</td>
+                  <td class="py-3 px-3 text-right text-textMuted">172</td><td class="py-3 px-3 text-right text-textMuted">6</td>
+                  <td class="py-3 px-3 text-right text-textMuted">164</td><td class="py-3 px-3 text-right text-textMuted">7</td>
+                  <td class="py-3 px-3 text-right text-textMuted">157</td><td class="py-3 px-3 text-right text-textMuted">9</td>
+                  <td class="py-3 px-3 text-right text-textMuted">156</td><td class="py-3 px-3 text-right text-textMuted">4</td>
+                  <td class="py-3 px-3 text-right text-textMuted">148</td><td class="py-3 px-3 text-right text-textMuted">8</td>
+                  <td class="py-3 px-3 text-right text-textMuted">151</td><td class="py-3 px-3 text-right text-textMuted">5</td>
+                  <td class="py-3 px-3 text-right text-textMuted">155</td><td class="py-3 px-3 text-right text-textMuted">5</td>
+                  <td class="py-3 pl-3 text-right font-semibold text-white">157.6</td>
+                  <td class="py-3 pl-3 text-right font-semibold text-red-400">44</td>
+                </tr>
+                <tr class="hover:bg-white/5 transition-colors">
+                  <td class="py-3 pr-4 font-medium text-white sticky left-0 bg-surface/95 backdrop-blur">Nguyen Chi Dong</td>
+                  <td class="py-3 px-3 text-right text-textMuted">90</td><td class="py-3 px-3 text-right text-textMuted">3</td>
+                  <td class="py-3 px-3 text-right text-textMuted">87</td><td class="py-3 px-3 text-right text-textMuted">1</td>
+                  <td class="py-3 px-3 text-right text-textMuted">90</td><td class="py-3 px-3 text-right text-textMuted">1</td>
+                  <td class="py-3 px-3 text-right text-textMuted">91</td><td class="py-3 px-3 text-right text-textMuted">3</td>
+                  <td class="py-3 px-3 text-right text-textMuted">96</td><td class="py-3 px-3 text-right text-textMuted">5</td>
+                  <td class="py-3 px-3 text-right text-textMuted">97</td><td class="py-3 px-3 text-right text-textMuted">3</td>
+                  <td class="py-3 px-3 text-right text-textMuted">96</td><td class="py-3 px-3 text-right text-textMuted">2</td>
+                  <td class="py-3 pl-3 text-right font-semibold text-white">92.4</td>
+                  <td class="py-3 pl-3 text-right font-semibold text-red-400">18</td>
+                </tr>
+                <tr class="hover:bg-white/5 transition-colors">
+                  <td class="py-3 pr-4 font-medium text-white sticky left-0 bg-surface/95 backdrop-blur">Nguyen Van Thanh</td>
+                  <td class="py-3 px-3 text-right text-textMuted">124</td><td class="py-3 px-3 text-right text-textMuted">6</td>
+                  <td class="py-3 px-3 text-right text-textMuted">119</td><td class="py-3 px-3 text-right text-textMuted">7</td>
+                  <td class="py-3 px-3 text-right text-textMuted">120</td><td class="py-3 px-3 text-right text-textMuted">3</td>
+                  <td class="py-3 px-3 text-right text-textMuted">123</td><td class="py-3 px-3 text-right text-textMuted">3</td>
+                  <td class="py-3 px-3 text-right text-textMuted">127</td><td class="py-3 px-3 text-right text-textMuted">1</td>
+                  <td class="py-3 px-3 text-right text-textMuted">128</td><td class="py-3 px-3 text-right text-textMuted">7</td>
+                  <td class="py-3 px-3 text-right text-textMuted">134</td><td class="py-3 px-3 text-right text-textMuted">6</td>
+                  <td class="py-3 pl-3 text-right font-semibold text-white">125.0</td>
+                  <td class="py-3 pl-3 text-right font-semibold text-red-400">33</td>
+                </tr>
+                <tr class="hover:bg-white/5 transition-colors">
+                  <td class="py-3 pr-4 font-medium text-white sticky left-0 bg-surface/95 backdrop-blur">Pham Van Nam</td>
+                  <td class="py-3 px-3 text-right text-textMuted">655</td><td class="py-3 px-3 text-right text-textMuted">22</td>
+                  <td class="py-3 px-3 text-right text-textMuted">637</td><td class="py-3 px-3 text-right text-textMuted">15</td>
+                  <td class="py-3 px-3 text-right text-textMuted">615</td><td class="py-3 px-3 text-right text-textMuted">34</td>
+                  <td class="py-3 px-3 text-right text-textMuted">628</td><td class="py-3 px-3 text-right text-textMuted">28</td>
+                  <td class="py-3 px-3 text-right text-textMuted">644</td><td class="py-3 px-3 text-right text-textMuted">27</td>
+                  <td class="py-3 px-3 text-right text-textMuted">653</td><td class="py-3 px-3 text-right text-textMuted">26</td>
+                  <td class="py-3 px-3 text-right text-textMuted">672</td><td class="py-3 px-3 text-right text-textMuted">22</td>
+                  <td class="py-3 pl-3 text-right font-semibold text-white">643.4</td>
+                  <td class="py-3 pl-3 text-right font-semibold text-red-400">174</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="border-t border-borderGlow font-semibold text-white">
+                  <td class="py-3 pr-4 sticky left-0 bg-surface/95 backdrop-blur">Grand Total</td>
+                  <td class="py-3 px-3 text-right">1,041</td><td class="py-3 px-3 text-right">37</td>
+                  <td class="py-3 px-3 text-right">1,007</td><td class="py-3 px-3 text-right">30</td>
+                  <td class="py-3 px-3 text-right">982</td><td class="py-3 px-3 text-right">47</td>
+                  <td class="py-3 px-3 text-right">998</td><td class="py-3 px-3 text-right">38</td>
+                  <td class="py-3 px-3 text-right">1,015</td><td class="py-3 px-3 text-right">41</td>
+                  <td class="py-3 px-3 text-right">1,029</td><td class="py-3 px-3 text-right">41</td>
+                  <td class="py-3 px-3 text-right">1,057</td><td class="py-3 px-3 text-right">35</td>
+                  <td class="py-3 pl-3 text-right text-aiPrimary">1,018.4</td>
+                  <td class="py-3 pl-3 text-right text-red-400">269</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+      </div>
+      </div>
+      <!-- END VIEW: RM/AM PERFORMANCE -->
+
     </div>
   </main>
 
@@ -317,7 +434,7 @@
     Chart.defaults.font.family = 'ui-sans-serif, system-ui, -apple-system, sans-serif';
     Chart.defaults.color = '#A1A1AA'; // textMuted
     
-    let turnoverChart, mixChart, attritionChart, reasonChart;
+    let turnoverChart, mixChart, attritionChart, reasonChart, rmamChart;
 
     function initCharts() {
       // 1. Turnover & Resignations Chart
@@ -434,9 +551,130 @@
           }
         }
       });
+
+      // 5. Turnover Rate by RM/AM
+      rmamChart = new Chart(document.getElementById('rmamChart'), {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+          datasets: [
+            {
+              label: 'Hoang Minh Duc',
+              data: [3.49, 4.27, 5.73, 2.56, 5.41, 3.31, 3.23],
+              borderColor: '#8B5CF6',
+              backgroundColor: '#8B5CF6',
+              tension: 0.4,
+              borderWidth: 2,
+              pointRadius: 3,
+              pointBackgroundColor: '#09090B',
+              pointBorderColor: '#8B5CF6',
+              pointBorderWidth: 2
+            },
+            {
+              label: 'Nguyen Chi Dong',
+              data: [3.33, 1.15, 1.11, 3.30, 5.21, 3.09, 2.08],
+              borderColor: '#3B82F6',
+              backgroundColor: '#3B82F6',
+              tension: 0.4,
+              borderWidth: 2,
+              pointRadius: 3,
+              pointBackgroundColor: '#09090B',
+              pointBorderColor: '#3B82F6',
+              pointBorderWidth: 2
+            },
+            {
+              label: 'Nguyen Van Thanh',
+              data: [4.84, 5.88, 2.50, 2.44, 0.79, 5.47, 4.48],
+              borderColor: '#F472B6',
+              backgroundColor: '#F472B6',
+              tension: 0.4,
+              borderWidth: 2,
+              pointRadius: 3,
+              pointBackgroundColor: '#09090B',
+              pointBorderColor: '#F472B6',
+              pointBorderWidth: 2
+            },
+            {
+              label: 'Pham Van Nam',
+              data: [3.36, 2.35, 5.53, 4.46, 4.19, 3.98, 3.27],
+              borderColor: '#34D399',
+              backgroundColor: '#34D399',
+              tension: 0.4,
+              borderWidth: 2,
+              pointRadius: 3,
+              pointBackgroundColor: '#09090B',
+              pointBorderColor: '#34D399',
+              pointBorderWidth: 2
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          events: ['click'],
+          interaction: {
+            mode: 'nearest',
+            intersect: false
+          },
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              align: 'end',
+              labels: { color: '#A1A1AA', boxWidth: 10, boxHeight: 10, usePointStyle: true, pointStyle: 'circle' }
+            },
+            tooltip: {
+              enabled: true,
+              position: 'nearest',
+              callbacks: {
+                label: (ctx) => `${ctx.dataset.label}: ${ctx.formattedValue}%`
+              }
+            }
+          },
+          scales: {
+            x: { grid: { display: false }, border: { display: false } },
+            y: {
+              grid: { color: 'rgba(255, 255, 255, 0.05)', borderDash: [4, 4] },
+              border: { display: false },
+              ticks: { callback: (val) => val + '%' }
+            }
+          }
+        }
+      });
     }
 
     initCharts();
+
+    // VIEW SWITCHING (Sidebar Tabs)
+    const overviewPanel = document.getElementById('view-overview');
+    const rmamPanel = document.getElementById('view-rmam');
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const view = link.dataset.view;
+
+        document.querySelectorAll('.nav-link').forEach(l => {
+          l.classList.remove('bg-aiPrimary/15', 'text-aiPrimary');
+          l.classList.add('text-textMuted');
+        });
+        link.classList.add('bg-aiPrimary/15', 'text-aiPrimary');
+        link.classList.remove('text-textMuted');
+
+        overviewPanel.classList.toggle('hidden', view !== 'overview');
+        rmamPanel.classList.toggle('hidden', view !== 'rmam');
+
+        // Charts need a resize nudge after their container becomes visible again
+        if (view === 'rmam') {
+          rmamChart.resize();
+        } else {
+          turnoverChart.resize();
+          mixChart.resize();
+          attritionChart.resize();
+          reasonChart.resize();
+        }
+      });
+    });
 
     // INTERACTIVITY
     const formatNumber = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -467,6 +705,11 @@
 
         reasonChart.data.datasets[0].data = [getFluctuation(320), getFluctuation(180), getFluctuation(105), getFluctuation(96)];
         reasonChart.update();
+
+        rmamChart.data.datasets.forEach(ds => {
+          ds.data = ds.data.map(() => (1 + Math.random() * 5).toFixed(2));
+        });
+        rmamChart.update();
 
         // Demographics
         let malePct = Math.round(40 + Math.random() * 35);
